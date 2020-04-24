@@ -1,5 +1,6 @@
 package me.restaurant.interfaces;
 
+import me.restaurant.application.RestaurantService;
 import me.restaurant.domain.MenuItemRepository;
 import me.restaurant.domain.MenuItemRepositoryImpl;
 import me.restaurant.domain.RestaurantRepository;
@@ -30,6 +31,9 @@ public class RestaurantControllerTest {
 
     @SpyBean(MenuItemRepositoryImpl.class) // 어떤 구현체를 사용할지 명시해야됨.
     private MenuItemRepository menuItemRepository;
+
+    @SpyBean(RestaurantService.class)
+    private RestaurantService restaurantService;
 
     @Test
     public void list() throws Exception {
