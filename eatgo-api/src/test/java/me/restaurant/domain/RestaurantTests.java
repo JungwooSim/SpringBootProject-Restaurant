@@ -1,4 +1,4 @@
-package domain;
+package me.restaurant.domain;
 
 import org.junit.Test;
 

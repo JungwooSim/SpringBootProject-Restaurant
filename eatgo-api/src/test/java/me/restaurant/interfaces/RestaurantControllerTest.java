@@ -1,9 +1,12 @@
 package me.restaurant.interfaces;
 
+import me.restaurant.domain.RestaurantRepository;
+import me.restaurant.domain.RestaurantRepositoryImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +22,9 @@ public class RestaurantControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @SpyBean(RestaurantRepositoryImpl.class) // 어떤 구현체를 사용할지 명시해야됨.
+    private RestaurantRepository repository;
 
     @Test
     public void list() throws Exception {

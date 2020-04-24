@@ -1,4 +1,4 @@
-package domain;
+package me.restaurant.domain;
 
 public class Restaurant {
     private final String name;
