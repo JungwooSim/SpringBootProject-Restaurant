@@ -1,5 +1,7 @@
 package me.restaurant.interfaces;
 
+import me.restaurant.domain.MenuItem;
+import me.restaurant.domain.MenuItemRepository;
 import me.restaurant.domain.Restaurant;
 import me.restaurant.domain.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +15,23 @@ import java.util.List;
 public class RestaurantController {
 
     @Autowired
-    private RestaurantRepository repository;
+    private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private MenuItemRepository menuItemRepository;
 
     @GetMapping("/restaurants")
     public List<Restaurant> restaurant() {
-        List<Restaurant> restaurants = repository.findAll();
+        List<Restaurant> restaurants = restaurantRepository.findAll();
 
         return restaurants;
     }
 
     @GetMapping("/restaurants/{id}")
     public Restaurant detail(@PathVariable("id") Long id) {
-        Restaurant restaurant = repository.findById(id);
+        Restaurant restaurant = restaurantRepository.findById(id);
+        List<MenuItem> menuItems = menuItemRepository.findAllByRestaurantId(id);
+        restaurant.setMenuItem(menuItems);
         return restaurant;
     }
 }
