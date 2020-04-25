@@ -34,11 +34,8 @@ public class RestaurantControllerTest {
     @MockBean
     RestaurantService restaurantService;
 
-    @SpyBean(RestaurantRepositoryImpl.class) // 어떤 구현체를 사용할지 명시해야됨.
+//    @SpyBean(RestaurantRepositoryImpl.class) // 어떤 구현체를 사용할지 명시해야됨.
     private RestaurantRepository restaurantRepository;
-
-    @SpyBean(MenuItemRepositoryImpl.class) // 어떤 구현체를 사용할지 명시해야됨.
-    private MenuItemRepository menuItemRepository;
 
     @Test
     public void list() throws Exception {
