@@ -18,6 +18,7 @@ public class RestaurantController {
     @Autowired
     private RestaurantService restaurantService;
 
+    @CrossOrigin
     @GetMapping("/restaurants")
     public List<Restaurant> restaurant() {
         List<Restaurant> restaurants = restaurantService.getRestaurants();
