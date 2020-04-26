@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +37,12 @@ public class RestaurantServiceTest {
 
     private void mockRestaurantRespository() {
         List<Restaurant> restaurants = new ArrayList<>();
-        Restaurant restaurant = new Restaurant(1004L, "JOKER House", "Seoul");
+        Restaurant restaurant = Restaurant.builder()
+                .id(1004L)
+                .name("Bob zip")
+                .address("Seoul")
+                .build();
+
         restaurants.add(restaurant);
 
         given(restaurantRepository.findAll()).willReturn(restaurants);
@@ -45,7 +51,7 @@ public class RestaurantServiceTest {
 
     private void mockMenuItemRepository() {
         List<MenuItem> menuItems = new ArrayList<>();
-        MenuItem menuItem = new MenuItem("Kimchi");
+        MenuItem menuItem = MenuItem.builder().name("Kimchi").build();
         menuItems.add(menuItem);
         given(menuItemRepository.findAllByRestaurantId(1004L)).willReturn(menuItems);
     }
@@ -71,10 +77,13 @@ public class RestaurantServiceTest {
 
     @Test
     public void addRestaurant() {
-        Restaurant restaurant = new Restaurant("Beyong", "Busan");
-        Restaurant saved = new Restaurant(1234L, "Beyong", "Busan");
+        given(restaurantRepository.save(any())).will(invocation -> {
+            Restaurant restaurant = invocation.getArgument(0);
+            restaurant.setId(1234L);
+            return restaurant;
+        });
 
-        given(restaurantRepository.save(any())).willReturn(saved);
+        Restaurant restaurant = Restaurant.builder().name("Beyong").address("Busan").build();
 
         Restaurant created = restaurantService.addRestaurant(restaurant);
 
@@ -83,7 +92,7 @@ public class RestaurantServiceTest {
 
     @Test
     public void updateRestaurant() {
-        Restaurant restaurant = new Restaurant(1004L, "Bab zip", "Seoul");
+        Restaurant restaurant = Restaurant.builder().id(1004L).name("Bab zip").address("Seoul").build();
 
         given(restaurantRepository.findById(1004L)).willReturn(Optional.of(restaurant));
         restaurantService.updateRestaurant(1004L, "Sool zip", "Busan");
