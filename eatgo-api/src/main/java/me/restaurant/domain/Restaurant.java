@@ -9,11 +9,13 @@ import java.util.List;
 
 @Entity
 public class Restaurant {
+
     @Id
     @GeneratedValue
     private Long id;
     private String name;
     private String address;
+    private String information;
 
     @Transient // 임시로 사용하는 것이라는 것을명시해주는것
     private List<MenuItem> menuItems = new ArrayList<MenuItem>();
@@ -25,12 +27,14 @@ public class Restaurant {
     public Restaurant(String name, String address) {
         this.name = name;
         this.address = address;
+        this.information = name + " in " + address;
     }
 
     public Restaurant(Long id, String name, String address) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.information = name + " in " + address;
     }
 
     public void setId(Long id) {
@@ -65,5 +69,10 @@ public class Restaurant {
         for (MenuItem menuItem : menuItems) {
             this.menuItems.add(menuItem);
         }
+    }
+
+    public void updateInformation(String name, String address) {
+        this.name = name;
+        this.address = address;
     }
 }
