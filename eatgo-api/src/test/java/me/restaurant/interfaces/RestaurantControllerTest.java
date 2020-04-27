@@ -1,17 +1,17 @@
 package me.restaurant.interfaces;
 
 import me.restaurant.application.RestaurantService;
-import me.restaurant.domain.*;
+import me.restaurant.domain.MenuItem;
+import me.restaurant.domain.Restaurant;
+import me.restaurant.domain.RestaurantNotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(RestController.class)
+@WebMvcTest(RestaurantController.class)
 public class RestaurantControllerTest {
 
     @Autowired
@@ -35,7 +35,7 @@ public class RestaurantControllerTest {
     RestaurantService restaurantService;
 
 //    @SpyBean(RestaurantRepositoryImpl.class) // 어떤 구현체를 사용할지 명시해야됨.
-    private RestaurantRepository restaurantRepository;
+//    private RestaurantRepository restaurantRepository;
 
     @Test
     public void list() throws Exception {
