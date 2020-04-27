@@ -4,6 +4,7 @@ import me.restaurant.application.RestaurantService;
 import me.restaurant.domain.MenuItem;
 import me.restaurant.domain.Restaurant;
 import me.restaurant.domain.RestaurantNotFoundException;
+import me.restaurant.domain.Review;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,6 @@ public class RestaurantControllerTest {
     @MockBean
     RestaurantService restaurantService;
 
-//    @SpyBean(RestaurantRepositoryImpl.class) // 어떤 구현체를 사용할지 명시해야됨.
-//    private RestaurantRepository restaurantRepository;
-
     @Test
     public void list() throws Exception {
         List<Restaurant> restaurants = new ArrayList<>();
@@ -52,25 +50,22 @@ public class RestaurantControllerTest {
 
     @Test
     public void detailWithExisted() throws Exception {
-        Restaurant restaurant1 = Restaurant.builder().id(1004L).name("JOKER House").address("Seoul").build();
+        Restaurant restaurant = Restaurant.builder().id(1004L).name("JOKER House").address("Seoul").build();
 
         MenuItem menuItem = MenuItem.builder().name("Kimchi").build();
-        restaurant1.setMenuItems(Arrays.asList(menuItem));
+        restaurant.setMenuItems(Arrays.asList(menuItem));
 
-        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1);
+        Review review = Review.builder().name("Joker").score(5).description("Greate!").build();
+        restaurant.setReviews(Arrays.asList(review));
 
-        Restaurant restaurant2 = Restaurant.builder().id(2020L).name("Cyber Food").address("Seoul").build();
-        given(restaurantService.getRestaurant(2020L)).willReturn(restaurant2);
+        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
 
         mvc.perform(get("/restaurants/1004"))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("\"id\":1004")))
-            .andExpect(content().string(containsString("\"name\":\"JOKER House\"")));
-
-        mvc.perform(get("/restaurants/2020"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("\"id\":2020")))
-                .andExpect(content().string(containsString("\"name\":\"Cyber Food\"")));
+            .andExpect(content().string(containsString("\"name\":\"JOKER House\"")))
+            .andExpect(content().string(containsString("Kimchi")))
+            .andExpect(content().string(containsString("Greate!")));
     }
 
     @Test
