@@ -3,10 +3,7 @@ package me.restaurant.interfaces;
 import me.restaurant.application.RestaurantService;
 import me.restaurant.domain.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,8 +14,11 @@ public class RestaurantController {
 
     @CrossOrigin
     @GetMapping("/restaurants")
-    public List<Restaurant> restaurant() {
-        List<Restaurant> restaurants = restaurantService.getRestaurants();
+    public List<Restaurant> restaurant(
+            @RequestParam("region") String region,
+            @RequestParam("categoryId") Long categoryId
+    ) {
+        List<Restaurant> restaurants = restaurantService.getRestaurants(region, categoryId);
 
         return restaurants;
     }
