@@ -1,0 +1,11 @@
+Spring:
+  datasource:
+    url: jdbc:h2:~/data/data
+  jpa:
+    hibernate:
+      ddl-auto: update
+---
+Spring:
+  profiles: test
+  datasource:
+    url: jdbc:h2:mem:test
