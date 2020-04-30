@@ -1,10 +1,7 @@
 package me.restaurant.interfaces;
 
 import me.restaurant.application.RestaurantService;
-import me.restaurant.domain.MenuItem;
-import me.restaurant.domain.MenuItemRepository;
 import me.restaurant.domain.Restaurant;
-import me.restaurant.domain.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
