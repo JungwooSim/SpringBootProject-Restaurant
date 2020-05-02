@@ -1,6 +1,5 @@
 package me.restaurant.application;
 
-import me.restaurant.domain.Category;
 import me.restaurant.domain.Region;
 import me.restaurant.domain.RegionRepository;
 import org.junit.Before;
@@ -13,9 +12,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
 
 public class RegionServiceTests {
 

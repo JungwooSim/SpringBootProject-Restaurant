@@ -31,18 +31,21 @@ public class ReviewControllerTests {
 
     @Test
     public void createWithValidAttriutes() throws Exception {
-        given(reviewService.addReview(eq(1L), any())).willReturn(
-                Review.builder().id(1004L).name("Joker").score(3).description("Mat-it-da").build()
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEwMDQsInVzZXJOYW1lIjoiSm9obiJ9.0nwaeM3fpDPvRGc64pyIp-JYNnuigCN9t_5ApVhPClQ";
+
+        given(reviewService.addReview(1L, "John", 3,  "Mat-it-da")).willReturn(
+                Review.builder().id(1004L).build()
         );
 
         mvc.perform(
                 post("/restaurants/1/reviews")
+                .header("Authorization", ":Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\" : \"Joker\", \"score\" : 3, \"description\" : \"Mat-it-da\"}")
+                .content("{\"score\" : 3, \"description\" : \"Mat-it-da\"}")
         ).andExpect(status().isCreated())
         .andExpect(header().string("location", "/restaurants/1/reviews/1004"));
 
-        verify(reviewService).addReview(eq(1L), any());
+        verify(reviewService).addReview(eq(1L), eq("John"), eq(3),  eq("Mat-it-da"));
     }
 
     @Test
@@ -53,6 +56,6 @@ public class ReviewControllerTests {
                 .content("{}")
         ).andExpect(status().isBadRequest());
 
-        verify(reviewService, never()).addReview(eq(1L), any()); // never()을 사용하면 호출을 하지 않음. (잘못된값이 들어왔으니 만들면 안됨)
+        verify(reviewService, never()).addReview(any(), any(), any(), any()); // never()을 사용하면 호출을 하지 않음. (잘못된값이 들어왔으니 만들면 안됨)
     }
 }
