@@ -2,7 +2,6 @@ package me.restaurant.application;
 
 import me.restaurant.domain.User;
 import me.restaurant.domain.UserRepository;
-import me.restaurant.interfaces.PasswordWrongException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -11,11 +10,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 public class UserServiceTests {
 
@@ -56,45 +54,5 @@ public class UserServiceTests {
         userService.registerUser(email, name, password);
 
         verify(userRepository, never()).save(any());
-    }
-
-    @Test
-    public void authenticateWithValidAttributes() {
-        String email = "tester@example.com";
-        String password = "test";
-
-        User mockUser = User.builder().email(email).build();
-        given(userRepository.findByEmail(email)).willReturn(Optional.of(mockUser));
-        given(passwordEncoder.matches(any(), any())).willReturn(true);
-
-        User user = userService.authenticate(email, password);
-
-        assertThat(user.getEmail(), is(email));
-    }
-
-    @Test(expected = EmailNotExistedException.class)
-    public void authenticateWithNotExistedEmail() {
-        String email = "x@example.com";
-        String password = "test";
-
-        given(userRepository.findByEmail(email)).willReturn(Optional.empty());
-
-        User user = userService.authenticate(email, password);
-
-        assertThat(user.getEmail(), is(email));
-    }
-
-    @Test(expected = PasswordWrongException.class)
-    public void authenticateWithWrongPassword() {
-        String email = "tester@example.com";
-        String password = "x";
-
-        User mockUser = User.builder().email(email).build();
-        given(userRepository.findByEmail(email)).willReturn(Optional.of(mockUser));
-        given(passwordEncoder.matches(any(), any())).willReturn(false);
-
-        User user = userService.authenticate(email, password);
-
-        assertThat(user.getEmail(), is(email));
     }
 }
