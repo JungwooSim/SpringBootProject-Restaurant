@@ -4,6 +4,7 @@ import me.restaurant.application.EmailNotExistedException;
 import me.restaurant.application.SessionService;
 import me.restaurant.application.UserService;
 import me.restaurant.domain.User;
+import me.restaurant.utils.JwtUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -23,29 +26,35 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(SessionController.class)
 public class SessionControllerTests {
     @Autowired
-    MockMvc mvc;
+    private MockMvc mvc;
 
     @MockBean
-    SessionService sessionService;
+    private JwtUtil jwtUtil;
 
     @MockBean
-    UserService userService;
+    private SessionService sessionService;
+
+    @MockBean
+    private UserService userService;
 
     @Test
     public void createWithValidAttributes() throws Exception {
+        Long id = 1004L;
+        String name = "tester";
         String email = "tester@example.com";
         String password = "test";
 
-        User mockUser = User.builder().password("ACCESSTOKEN").build();
+        User mockUser = User.builder().id(id).name(name).build();
         given(userService.authenticate(email, password)).willReturn(mockUser);
+
+        given(jwtUtil.createToken(id, name)).willReturn("header.payload.signiture");
 
         mvc.perform(post("/session")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"tester@example.com\", \"password\":\"test\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/session"))
-        .andExpect(content().string("{\"accessToken\":\"ACCESSTOKE\"}"));
-
+        .andExpect(content().string(containsString("{\"accessToken\":\"header.payload.signiture\"}")));
 
         verify(userService).authenticate(eq(email), eq(password));
     }

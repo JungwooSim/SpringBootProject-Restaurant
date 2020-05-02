@@ -2,6 +2,7 @@ package me.restaurant.interfaces;
 
 import me.restaurant.application.UserService;
 import me.restaurant.domain.User;
+import me.restaurant.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,9 @@ public class SessionController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    JwtUtil jwtUtil;
+
     @PostMapping("/session")
     public ResponseEntity<SessionResponseDto> create(
             @RequestBody SessionRequestDto resource
@@ -25,7 +29,7 @@ public class SessionController {
 
         User user = userService.authenticate(email, password);
 
-        String accessToken = user.getAccessToken();
+        String accessToken = jwtUtil.createToken(user.getId(), user.getName());
 
         String url = "/session";
         SessionResponseDto sessionResponseDto = SessionResponseDto.builder()
