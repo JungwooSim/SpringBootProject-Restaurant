@@ -20,7 +20,7 @@ FastCampus의 "자바 웹 개발 마스터" 강의 패키지에 포함되어 있
 모든 개발은 TDD기반으로 진행되었다.
 ### 프로젝트 기능 및 구조
 #### API 기능
-<img src="/img/img_1.png" width:"500px";>
+<img src="/img/img_1.png" width="500px">
 
 #### ERD
 <img src="/img/img_2.png" width="700px">
