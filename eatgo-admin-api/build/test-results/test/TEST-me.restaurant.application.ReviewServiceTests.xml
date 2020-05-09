@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="me.restaurant.application.ReviewServiceTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2020-04-28T03:39:28" hostname="BIGui-MacBookPro.local" time="0.306">
-  <properties/>
-  <testcase name="getReviews" classname="me.restaurant.application.ReviewServiceTests" time="0.306"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
